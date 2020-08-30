@@ -95,7 +95,7 @@ def main():
 
     writer.write(
         '\nCreated using ' +
-        '[Bookmark Extractor]' +
+        '[Python Bookmark Extractor]' +
         '(https://github.com/ddmitov/python-bookmark-extractor)\n'
     )
 
