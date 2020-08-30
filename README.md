@@ -1,4 +1,4 @@
-Bookmark Extractor
+Python Bookmark Extractor
 --------------------------------------------------------------------------------
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](./LICENSE.md)
 
@@ -7,7 +7,6 @@ Bookmarks of Chromium for Linux and Chrome for Windows are supported as input so
 Markdown is the only supported output format.  
   
 This script is a Python 3 version of my Java-powered [Bookmark Extractor](https://github.com/ddmitov/bookmark-extractor) without link-checking capability.  
-
 
 ## Usage
 ```
