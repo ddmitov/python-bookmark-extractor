@@ -3,6 +3,7 @@
 # Bookmark Extractor is licensed under the
 # GNU General Public License Version 3.
 # Dimitar D. Mitov 2020
+# https://github.com/ddmitov/python-bookmark-extractor
 
 import argparse
 import json
@@ -70,7 +71,10 @@ def main():
     # extract all wanted bookmarks and
     # write a Markdown output file:
     bookmarks_file_linux = '/.config/chromium/Default/Bookmarks'
-    bookmarks_file_windows = '\\Google\\Chrome\\User Data\\Default\\Bookmarks'
+    bookmarks_file_windows = (
+        '\\AppData\\Local' +
+        '\\Google\\Chrome\\User Data\\Default\\Bookmarks'
+    )
 
     home_directory = str(pathlib.Path.home())
     bookmarks_file = None
@@ -81,14 +85,14 @@ def main():
     if platform.system() == 'Windows':
         bookmarks_file = home_directory + bookmarks_file_windows
 
-    reader = open(bookmarks_file, 'r')
+    reader = open(bookmarks_file, 'r', encoding='utf8')
     bookmarks_file_contents = reader.read()
     reader.close()
 
     bookmarks_json = json.loads(bookmarks_file_contents)
     other_bookmarks = bookmarks_json['roots']['other']
 
-    writer = open('bookmarks.md', 'w')
+    writer = open('bookmarks.md', 'w', encoding='utf8')
     writer.write('## ' + root_name + '\n')
 
     node_parser(other_bookmarks, 0, root_name, False, writer)
@@ -96,7 +100,7 @@ def main():
     writer.write(
         '\nCreated using ' +
         '[Python Bookmark Extractor]' +
-        '(https://github.com/ddmitov/python-bookmark-extractor)\n'
+        '(https://github.com/ddmitov/python-bookmark-extractor)  \n'
     )
 
     writer.close()
