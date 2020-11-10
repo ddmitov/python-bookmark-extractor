@@ -6,14 +6,14 @@ Python Bookmark Extractor is my personal selective bookmark extractor and format
 Bookmarks of Chromium for Linux and Chrome for Windows are supported as input source.  
 Markdown is the only supported output format.  
   
-This script is a Python 3 version of my Java-powered [Bookmark Extractor](https://github.com/ddmitov/bookmark-extractor) without link-checking capability.  
+This script is a Python 3 version of my Java-powered [Bookmark Extractor](https://github.com/ddmitov/bookmark-extractor).  
 
 ## Usage
 ```
-python3 ./bookmark-extractor.py --root=root_folder  
-python3 ./bookmark-extractor.py --root="root folder with spaces"  
-python3 ./bookmark-extractor.py -r=root_folder  
-python3 ./bookmark-extractor.py -r="root folder with spaces"  
+python3 ./bookmark-extractor.py --root="root folder"  
+python3 ./bookmark-extractor.py --root="root folder"  --check  
+python3 ./bookmark-extractor.py -r="root folder"  
+python3 ./bookmark-extractor.py -r="root folder" -c  
 ```
 
 ## [License](./LICENSE.md)

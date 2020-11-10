@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Bookmark Extractor is licensed under the
+# Python Bookmark Extractor is licensed under the
 # GNU General Public License Version 3.
 # Dimitar D. Mitov 2020
 # https://github.com/ddmitov/python-bookmark-extractor
@@ -9,9 +9,10 @@ import argparse
 import json
 import pathlib
 import platform
+import requests
 
 
-def node_parser(node, level, name, target, writer):
+def node_parser(node, level, name, target, writer, url_check):
     space = '  '
 
     if node['name'] == name:
@@ -20,13 +21,37 @@ def node_parser(node, level, name, target, writer):
 
     if 'url' in node:
         if target is True:
-            writer.write(
-                (space * level) +
-                '* ' +
-                '[' + node['name'] + ']' +
-                '(' + node['url'] + ')' +
-                '  \n'
-            )
+            print_url = True
+
+            # Optionally check the URL of the bookmark:
+            if url_check is True:
+                response = None
+
+                try:
+                    response = requests.get(node['url'])
+                except Exception:
+                    pass
+
+                if response is None:
+                    print('PAGE NOT FOUND: ' + node['url'])
+                    print_url = False
+
+                if response is not None:
+                    if response.status_code == 404:
+                        print('PAGE NOT FOUND: ' + node['url'])
+                        print_url = False
+
+                    if response.status_code != 404:
+                        print('OK: ' + node['url'])
+
+            if print_url is True:
+                writer.write(
+                    (space * level) +
+                    '* ' +
+                    '[' + node['name'] + ']' +
+                    '(' + node['url'] + ')' +
+                    '  \n'
+                )
 
     if 'url' not in node:
         if target is True:
@@ -39,17 +64,18 @@ def node_parser(node, level, name, target, writer):
 
     level = level + 1
 
+    # Recursively scan all subfolders:
     if node['type'] == 'folder':
         for child_node in node['children']:
-            node_parser(child_node, level, name, target, writer)
+            node_parser(child_node, level, name, target, writer, url_check)
 
     return True
 
 
 def main():
-    # Take desired bookmarks root directory from command line argument:
     commandline_parser = argparse.ArgumentParser()
 
+    # Take the desired bookmarks root folder from command line argument:
     commandline_parser.add_argument(
         '-r',
         '--root',
@@ -60,12 +86,15 @@ def main():
         help='desired bookmarks root folder'
     )
 
+    # Optional command line flag to check all bookmark URLs:
+    commandline_parser.add_argument(
+        '-c',
+        '--check',
+        action='store_true',
+        help='check URL'
+    )
+
     arguments = commandline_parser.parse_args()
-
-    root_name = None
-
-    if arguments.root:
-        root_name = arguments.root
 
     # Read the bookmarks file,
     # extract all wanted bookmarks and
@@ -92,10 +121,21 @@ def main():
     bookmarks_json = json.loads(bookmarks_file_contents)
     other_bookmarks = bookmarks_json['roots']['other']
 
+    root_name = None
+
+    if arguments.root:
+        root_name = arguments.root
+
     writer = open('bookmarks.md', 'w', encoding='utf8')
     writer.write('## ' + root_name + '\n')
 
-    node_parser(other_bookmarks, 0, root_name, False, writer)
+    url_check = False
+
+    if arguments.check:
+        url_check = True
+
+    # Find the desired bookmarks root folder and scan it recursively:
+    node_parser(other_bookmarks, 0, root_name, False, writer, url_check)
 
     writer.write(
         '\nCreated using ' +
