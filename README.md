@@ -10,10 +10,10 @@ This script is a Python 3 version of my Java-powered [Bookmark Extractor](https:
 
 ## Usage
 ```
-python3 ./bookmark-extractor.py --root="root folder"  
-python3 ./bookmark-extractor.py --root="root folder" --check  
-python3 ./bookmark-extractor.py -r="root folder"  
-python3 ./bookmark-extractor.py -r="root folder" -c  
+python3 ./bookmark_extractor.py --root="root folder"  
+python3 ./bookmark_extractor.py --root="root folder" --check  
+python3 ./bookmark_extractor.py -r="root folder"  
+python3 ./bookmark_extractor.py -r="root folder" -c  
 ```
 
 ## [License](./LICENSE.md)
