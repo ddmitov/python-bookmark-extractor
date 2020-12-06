@@ -41,9 +41,6 @@ def node_parser(node, level, name, target, writer, url_check):
                         print('PAGE NOT FOUND: ' + node['url'])
                         print_url = False
 
-                    if response.status_code != 404:
-                        print('OK: ' + node['url'])
-
             if print_url is True:
                 writer.write(
                     (space * level) +
@@ -133,6 +130,9 @@ def main():
 
     if arguments.check:
         url_check = True
+
+    if url_check is True:
+        print('\nOnly problematic URLs are going to be printed!\n')
 
     # Find the desired bookmarks root folder and scan it recursively:
     node_parser(other_bookmarks, 0, root_name, False, writer, url_check)
