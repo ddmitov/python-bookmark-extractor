@@ -96,7 +96,7 @@ def main():
     # Read the bookmarks file,
     # extract all wanted bookmarks and
     # write a Markdown output file:
-    bookmarks_file_linux = '/.config/chromium/Default/Bookmarks'
+    bookmarks_file_linux = '/.config/google-chrome/Default/Bookmarks'
     bookmarks_file_windows = (
         '\\AppData\\Local' +
         '\\Google\\Chrome\\User Data\\Default\\Bookmarks'
