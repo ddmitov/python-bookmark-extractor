@@ -10,6 +10,9 @@ import json
 import pathlib
 import platform
 import requests
+import time
+
+SECONDS_SLEEP_BETWEEN_REQUESTS = 1
 
 
 def node_parser(node, level, name, target, writer, url_check):
@@ -37,9 +40,17 @@ def node_parser(node, level, name, target, writer, url_check):
                     print_url = False
 
                 if response is not None:
-                    if response.status_code == 404:
-                        print('PAGE NOT FOUND: ' + node['url'])
+                    if response.status_code != 200:
+                        print(
+                            'ERROR ' +
+                            str(response.status_code) +
+                            ' - ' +
+                            node['url']
+                        )
+
                         print_url = False
+
+                time.sleep(SECONDS_SLEEP_BETWEEN_REQUESTS)
 
             if print_url is True:
                 writer.write(
